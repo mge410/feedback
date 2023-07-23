@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+switch ($argv[1]) {
+    case 'install':
+        system('composer install');
+        system('php artisan key:generate');
+        system('php artisan migrate');
+        system('php artisan db:seed');
+        break;
+    case 'test':
+        system('php artisan test');
+        break;
+    case 'models':
+        system('php artisan ide-helper:models -N');
+        break;
+    case 'db:refresh':
+        system('php artisan migrate:refresh');
+        system('php artisan migrate:refresh');
+        system('php script models');
+        system('php artisan db:seed');
+        break;
+    default:
+        echo 'Неизвестный скрипт';
+}
