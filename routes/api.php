@@ -17,5 +17,5 @@ use App\Http\Controllers\{
 */
 
 Route::name('api.')->group(function () {
-    Route::resource('feedbacks', FeedbackController::class)->only(['store', 'show']);
+    Route::resource('feedbacks', FeedbackController::class)->only(['index', 'store', 'show']);
 });

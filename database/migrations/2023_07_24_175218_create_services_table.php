@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('feedback', function(Blueprint $table) {
-            $table->dateTime('datetime')->nullable();
+        Schema::create('service', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('feedback', function(Blueprint $table) {
-            $table->dropColumn('datetime');
-        });
+        Schema::dropIfExists('service');
     }
 };

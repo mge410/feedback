@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Feedback;
 
 use App\Http\Controllers\Controller;
 use App\Models\Feedback;
+use App\Models\Service;
 use App\UseCases\AcceptFeedbackData;
 use App\UseCases\FeedbackUseCases;
 use DateTime;
@@ -12,6 +13,13 @@ use Illuminate\Http\JsonResponse;
 
 class FeedbackController extends Controller
 {
+    public function index(): JsonResponse
+    {
+        $services = Service::select('id', 'title')->get();
+
+        return response()->json($services);
+    }
+
     public function store(FeedbackStoreRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -20,6 +28,8 @@ class FeedbackController extends Controller
             title: $data['title'],
             description: $data['description'],
             datetime: $this->convertTimestampToDT($data['datetime']),
+            service_id: $data['service_id'],
+            rating: $data['rating'],
         ));
 
         return response()->json([
@@ -34,7 +44,12 @@ class FeedbackController extends Controller
             'description' => $feedback->description,
             'datetime' => DateTime
                     ::createFromFormat('Y-m-d H:i:s', $feedback->datetime)
-                    ->getTimestamp() * 1000
+                    ->getTimestamp() * 1000,
+            'service_name' => Service::select('id', 'title')
+                ->whereId($feedback->service_id)
+                ->first()
+                ->title,
+            'rating' => $feedback->rating,
         ]);
     }
 
