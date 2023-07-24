@@ -48,8 +48,9 @@ const feedback = reactive({
 });
 
 const datetime = computed(() => {
-    return new Date(Number(feedback.datetime)).toLocaleString()
-})
+    const options = { timeZone: 'UTC' };
+    return new Date(Number(feedback.datetime)).toLocaleString('ru-RU', options);
+});
 
 onBeforeMount(() => {
     axios.get<FeedbackResponse>(env.backend_url + `/feedbacks/${idFromRouter}`)
